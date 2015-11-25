@@ -782,6 +782,8 @@ module egret {
             var worldTransform = o._worldTransform;
             var parent = do_props._parent;
 
+            if(!parent) return;
+
             worldTransform.identityMatrix(parent._worldTransform);
             this._getMatrix(worldTransform);
 
