@@ -129,6 +129,7 @@ module egret {
         private loadSound(loader:URLLoader):void {
             var virtualUrl:string = this.getVirtualUrl(loader._request.url);
             var audio = new Audio(virtualUrl);
+
             audio["__timeoutId"] = egret.setTimeout(soundPreloadCanplayHandler, this, 100);
             audio.addEventListener('canplaythrough', soundPreloadCanplayHandler, false);
             audio.addEventListener("error", soundPreloadErrorHandler, false);
@@ -145,6 +146,7 @@ module egret {
                 sound._setAudio(htmlAudio);
                 loader.data = sound;
                 __callAsync(Event.dispatchEvent, Event, loader, Event.COMPLETE);
+                audio["__loaded"] = true;
             };
 
             function soundPreloadErrorHandler(event) {

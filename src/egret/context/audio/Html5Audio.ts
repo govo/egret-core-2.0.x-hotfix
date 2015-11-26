@@ -47,12 +47,13 @@ module egret {
          * @param loop {boolean} 是否循环播放，默认为false
          */
         public _play(type?:string):void {
-            this.removeListeners();
 
-            if (Html5Capatibility._audioMustLoad) {
+            if (Html5Capatibility._audioMustLoad && !this._audio["__loaded"]) {
                 //this._audio = this._audio.cloneNode();
                 this._audio.load();
             }
+            this._audio["__loaded"] = true;
+
             this.paused = false;
             this._audio.autoplay = true;
             this._audio.volume = this._volume;
@@ -82,6 +83,11 @@ module egret {
 
             this.clear();
         };
+        private loaded = (e)=> {
+            this._audio.removeEventListener("ended", this.loaded);
+            this._audio["__loaded"] = true;
+            console.log("loaded",this._audio);
+        };
 
         private clear():void {
             try {
@@ -108,6 +114,7 @@ module egret {
         public _pause():void {
             this.paused = true;
             this._audio.pause();
+            this._audio.removeEventListener("ended", this.func);
         }
 
         /**
